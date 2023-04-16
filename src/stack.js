@@ -1,4 +1,5 @@
-const { NotImplementedError } = require('../extensions/index.js');
+const {NotImplementedError} = require('../extensions/index.js');
+const {ListNode} = require("../extensions/list-node");
 
 /**
  * Implement the Stack with a given interface via array.
@@ -13,20 +14,46 @@ const { NotImplementedError } = require('../extensions/index.js');
  *
  */
 class Stack {
-  push(/* element */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
-  }
 
-  pop() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
-  }
+    constructor() {
+        this.fullStack = new ListNode()
+        this.lastPosition = this.fullStack
+    }
 
-  peek() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
-  }
+    push(value) {
+        if (this.lastPosition.value !== undefined) {
+            this.lastPosition.next = new ListNode()
+            this.lastPosition = this.lastPosition.next
+            this.lastPosition.value = value;
+        } else {
+            this.lastPosition.value = value;
+        }
+    }
+
+    pop() {
+        if (this.fullStack.value === undefined && this.fullStack.next === null) {
+            return undefined
+        }
+
+        if (this.fullStack.value !== undefined && this.fullStack.next === null) {
+            let result = this.fullStack.value;
+            this.fullStack.value = undefined;
+            return result
+        }
+
+        this.lastPosition = this.fullStack
+        while (this.lastPosition.next.next !== null) {
+            this.lastPosition = this.lastPosition.next
+        }
+
+        let result = this.lastPosition.next.value;
+        this.lastPosition.next = null;
+        return result
+    }
+
+    peek() {
+        return this.lastPosition.value
+    }
 }
 
 module.exports = {
